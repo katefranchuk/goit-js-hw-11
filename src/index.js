@@ -4,7 +4,6 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { perPage, PixabayAPI } from './js/api/web-api';
 
-
 const searchFormEl = document.querySelector('#search-form');
 const galleryContainerEl = document.querySelector('.gallery');
 const loadMoreButtonEl = document.querySelector('.load-more');
@@ -39,12 +38,9 @@ function onSearchFormSubmit(evenet) {
   mountData();
 }
 
-
 async function mountData() {
   try {
-    const data = await pixabayAPI
-      .fetchPhotosByQuery()
-      .then(response => response.data);
+    const { data } = await pixabayAPI.fetchPhotosByQuery();
 
     if (data.hits.length === 0) {
       Notify.failure(
@@ -54,7 +50,7 @@ async function mountData() {
       clearMarkup(galleryContainerEl);
       return;
     }
-   
+
     if (data.totalHits > perPage) {
       // {per_page: 40}
       removeClass('is-hidden');
@@ -69,27 +65,26 @@ async function mountData() {
     console.log(error);
   } finally {
     serchButtonEl.disabled = false;
-    console.log('hi');
   }
 }
 
 async function onLoadMoreButtonClick() {
   try {
     pixabayAPI.page += 1;
-    const data = await pixabayAPI
-      .fetchPhotosByQuery()
-      .then(response => response.data);
+    const { data } = await pixabayAPI.fetchPhotosByQuery();
+
+    if (data.hits.length === 0) {
+      addClass('is-hidden');
+      Notify.failure(
+        "We're sorry, but you've reached the end of search results."
+      );
+      return;
+    }
     galleryContainerEl.insertAdjacentHTML(
       'beforeend',
       createGalleryCards(data.hits)
     );
     lightbox.refresh();
-    if (Math.ceil(data.totalHits / perPage) === pixabayAPI.page) {
-      addClass('is-hidden');
-      Notify.failure(
-        "We're sorry, but you've reached the end of search results."
-      );
-    }
   } catch (error) {
     console.log(error);
   }
@@ -111,4 +106,3 @@ function onGalleryItemClick(event) {
   event.preventDefault();
   console.log(event.target);
 }
-
