@@ -1,0 +1,56 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.is-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+.button {
+  display: inline-block;
+  border: none;
+  background: hsl(228, 66%, 53%);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  box-shadow: 0 4px 8px hsla(228, 66%, 45%, 0.25);
+  transition: all 0.3s ease-in-out;
+}
+
+.button:not([disabled]):hover {
+  background: hsl(228, 66%, 47%);
+}
+
+.button:disabled {
+  opacity: 0.6;
+}
